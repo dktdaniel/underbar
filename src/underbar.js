@@ -66,7 +66,7 @@
     // it uses the iteration helper `each`, which you will need to write.
     var result = -1;
 
-    _.each(array, function(item, index) {
+    _.each(array, (item, index) => {
       if (item === target && result === -1) {
         result = index;
       }
@@ -77,7 +77,7 @@
   // Return all elements of an array that pass a truth test.
   _.filter = function(collection, test) {
     var newArr = [];
-      _.each(collection, function(item) {
+      _.each(collection, (item) => {
         if (test(item)) {
           newArr.push(item);
         }
@@ -89,7 +89,7 @@
   _.reject = function(collection, test) {
     // TIP: see if you can re-use _.filter() here, without simply
     // copying code in and modifying it
-    return _.filter(collection, function(el) {
+    return _.filter(collection, (el) => {
       return !test(el);
     });
   };
@@ -107,9 +107,9 @@
     // like each(), but in addition to running the operation on all
     // the members, it also maintains an array of results.
     let arr = [];
-    for (var i = 0; i < collection.length; i++) {
-      arr.push(iterator(collection[i]));
-    }
+    _.each(collection, (el) => {
+      arr.push(iterator(el));
+    });
     return arr;
   };
 
@@ -152,7 +152,7 @@
   //   }); // should be 5, regardless of the iterator function passed in
   //          No accumulator is given so the first element is used.
   _.reduce = function(collection, iterator, accumulator) {
-      _.each(collection, function(el, idx) {
+      _.each(collection, (el, idx) => {
         if (accumulator === undefined && idx === 0) {
           accumulator = el;
         } else {
@@ -166,7 +166,7 @@
   _.contains = function(collection, target) {
     // TIP: Many iteration problems can be most easily expressed in
     // terms of reduce(). Here's a freebie to demonstrate!
-    return _.reduce(collection, function(wasFound, item) {
+    return _.reduce(collection, (wasFound, item) => {
       if (wasFound) {
         return true;
       }
@@ -179,7 +179,7 @@
   _.every = function(collection, iterator) {
     // TIP: Try re-using reduce() here.
     var iterator = iterator || _.identity;
-    return !!_.reduce(collection, function(accumulator, el) {
+    return !!_.reduce(collection, (accumulator, el) => {
       return accumulator && iterator(el);
     }, true);
   };
@@ -189,7 +189,7 @@
   _.some = function(collection, iterator) {
     // TIP: There's a very clever way to re-use every() here.
     var iterator = iterator || _.identity;
-    return !_.every(collection, function(el) {
+    return !_.every(collection, (el) => {
       return !iterator(el);
     });
   };
@@ -314,7 +314,14 @@
   // http://mdn.io/Array.prototype.slice
   _.shuffle = function(array) {
     var newArr = array.slice();
-    
+    for (var i = array.length - 1; i > 0; i--) {
+      var random = Math.floor(Math.random() * (i + 1));
+      var current = newArr[i];
+      // swap current element with random element
+      newArr[i] = newArr[random];
+      newArr[random] = current;
+    }
+    return newArr;
   };
 
 
